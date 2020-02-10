@@ -85,18 +85,6 @@ namespace IntegradorWebService.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SaveFile {
-            get {
-                return ((string)(this["SaveFile"]));
-            }
-            set {
-                this["SaveFile"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("PEFycmF5T2ZGb3JtYXRhY2FvUGxhbmlsaGE+PEZvcm1hdGFjYW9QbGFuaWxoYT48Tm9tZUF0cmlidXRvP" +
             "kNvZGlnb0JhcnJhVm9sdW1lPC9Ob21lQXRyaWJ1dG8+PENvbHVuYT4yPC9Db2x1bmE+PEluaWNpbz4xP" +
             "C9JbmljaW8+PFRhbWFuaG8+NDwvVGFtYW5obz48RGVsaW1pdGFkb3I+OzwvRGVsaW1pdGFkb3I+PC9Gb" +
@@ -132,6 +120,18 @@ namespace IntegradorWebService.Properties {
             }
             set {
                 this["LayoutUnimed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SaveFile {
+            get {
+                return ((string)(this["SaveFile"]));
+            }
+            set {
+                this["SaveFile"] = value;
             }
         }
     }

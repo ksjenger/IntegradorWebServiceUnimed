@@ -33,32 +33,64 @@ namespace IntegradorWebService.ExcelServices
             }
             string FileName = Properties.Settings.Default.SaveFile + "\\" + Form1.nomeArquivo + " " + sdf + ".csv";
 
-            using (StreamWriter file = new System.IO.StreamWriter(FileName, false, new UTF8Encoding(true)))
+            try
             {
-                int cont = 0;
-                string retornoHeader = string.Join(" ; ", "Status da Importação", "Nome do Destinatario", "Lista de Erros / Etiqueta",  "Observacao VIPP" );
-                file.WriteLine(retornoHeader);
-                foreach (RetornoInvalida oRetorno in TrataRetorno.lRetornoInvalida)
+                using (StreamWriter file = new System.IO.StreamWriter(FileName, false, new UTF8Encoding(true)))
                 {
-                    string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Erro.Trim(), oRetorno.Observacao.Trim());
-                    file.WriteLine(retorno);
-                }
+                    int cont = 0;
+                    string retornoHeader = string.Join(" ; ", "Status da Importação", "Nome do Destinatario", "Lista de Erros / Etiqueta", "Observacao VIPP");
+                    file.WriteLine(retornoHeader);
+                    foreach (RetornoInvalida oRetorno in TrataRetorno.lRetornoInvalida)
+                    {
+                        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Erro.Trim(), oRetorno.Observacao.Trim());
+                        file.WriteLine(retorno);
+                    }
 
-                foreach (RetornoValida oRetorno in TrataRetorno.lRetornoValida)
-                {
-                    string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Etiqueta.Trim(), oRetorno.Observacao.Trim());
-                    file.WriteLine(retorno);
-                }
-                file.Close();
+                    foreach (RetornoValida oRetorno in TrataRetorno.lRetornoValida)
+                    {
+                        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Etiqueta.Trim(), oRetorno.Observacao.Trim());
+                        file.WriteLine(retorno);
+                    }
+                    file.Close();
 
+                }
             }
-            
+            catch (DirectoryNotFoundException e)
+            {
 
+                System.Windows.MessageBox.Show(e.Message, "Erro ao salvar o retorno.", MessageBoxButton.OK, MessageBoxImage.Error);
 
+                System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
+                using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                {
+                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;
+                    folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
+                    folderBrowserDialog.ShowDialog();
+                    Properties.Settings.Default.SaveFile = folderBrowserDialog.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
 
+                FileName = Properties.Settings.Default.SaveFile + "\\" + Form1.nomeArquivo + " " + sdf + ".csv";
+                //using (StreamWriter file = new System.IO.StreamWriter(FileName, false, new UTF8Encoding(true)))
+                //{
+                //    int cont = 0;
+                //    string retornoHeader = string.Join(" ; ", "Status da Importação", "Nome do Destinatario", "Lista de Erros / Etiqueta", "Observacao VIPP");
+                //    file.WriteLine(retornoHeader);
+                //    foreach (RetornoInvalida oRetorno in TrataRetorno.lRetornoInvalida)
+                //    {
+                //        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Erro.Trim(), oRetorno.Observacao.Trim());
+                //        file.WriteLine(retorno);
+                //    }
 
+                //    foreach (RetornoValida oRetorno in TrataRetorno.lRetornoValida)
+                //    {
+                //        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Etiqueta.Trim(), oRetorno.Observacao.Trim());
+                //        file.WriteLine(retorno);
+                //    }
+                //    file.Close();
 
-
+                //}
+            }
 
         }
 
@@ -163,20 +195,20 @@ namespace IntegradorWebService.ExcelServices
             var sdf = saveNow.ToString("dd-MM-yyyy_hh.mm");
 
 
-            while(Properties.Settings.Default.SaveFile == "")
+            while (Properties.Settings.Default.SaveFile == "")
             {
-                    System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
-                    using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
-                    {
-                        folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;
-                        folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
-                        folderBrowserDialog.ShowDialog();
-                        Properties.Settings.Default.SaveFile = folderBrowserDialog.SelectedPath;
-                        Properties.Settings.Default.Save();
-                    }                
+                System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
+                using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                {
+                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;
+                    folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
+                    folderBrowserDialog.ShowDialog();
+                    Properties.Settings.Default.SaveFile = folderBrowserDialog.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
             }
 
-            var nomeArquivo =  Properties.Settings.Default.SaveFile + "\\" + Form1.nomeArquivo + " " + sdf + ".xlsx";
+            var nomeArquivo = Properties.Settings.Default.SaveFile + "\\" + Form1.nomeArquivo + " " + sdf + ".xlsx";
             xlsApp.ActiveWorkbook.SaveAs(nomeArquivo);
             xlsApp.Quit();
             #endregion
